@@ -1,12 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 
+
 const URL = 'http://localhost:9000/api/todos'
 
 
 export default class App extends React.Component {
   state={
     todos:[],
+    error:'',
   }
   fetchAllTodos = () =>{
 axios.get(URL)
@@ -14,7 +16,7 @@ axios.get(URL)
   this.setState({ ...this.state, todos: res.data.data})
 })
 .catch(err => {
-  debugger
+  this.setState({...this.state, error: err.response.data.message})
 })
   }
   componentDidMount(){
@@ -23,7 +25,7 @@ axios.get(URL)
   render() {
     return(
       <div>
-        <div id='error'>Error: No Error here</div>
+        <div id='error'>Error:{this.state.error}</div>
         <div id='todos'>
           <h2>Todos</h2>
           {
